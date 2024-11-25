@@ -59,6 +59,8 @@ class MarkdownStream:
             self.mdargs = dict()
             
         self.mermaid_pattern = re.compile(r'```mermaid\n(.*?)\n```', re.DOTALL)
+        self.live = Live(Text(""), refresh_per_second=1.0 / self.min_delay)
+        self.live.start()
 
     def _generate_mermaid_link(self, graph_markdown):
         """Generate a mermaid.live link for the given graph markdown"""
@@ -86,9 +88,6 @@ class MarkdownStream:
         d_encode = js_btoa(deflated)
         link = 'http://mermaid.live/view#pako:' + js_bytes_to_string(d_encode)
         return link
-
-        self.live = Live(Text(""), refresh_per_second=1.0 / self.min_delay)
-        self.live.start()
 
     def __del__(self):
         if self.live:
